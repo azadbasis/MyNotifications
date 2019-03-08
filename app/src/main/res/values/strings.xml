@@ -2,5 +2,7 @@
     <string name="app_name">My Notifications</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="user_fragment">User Fragment</string>
+    <string name="notification_fragment">Notification Fragment</string>
+    <string name="profile_fragment">Profile Fragment</string>
 </resources>
