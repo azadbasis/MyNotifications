@@ -77,9 +77,9 @@
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
         android:background="@drawable/input_background"
+        android:fontFamily="@font/nunito_semibold"
         android:text="Login to my Account"
         android:textAllCaps="false"
-        android:fontFamily="@font/nunito_semibold"
         android:textColor="@color/colorPrimary"
         android:textSize="16sp" />
 
@@ -98,4 +98,12 @@
         android:text="Need a new Account?"
         android:textAllCaps="false"
         android:textColor="@color/textTabBright" />
+
+    <ProgressBar
+        android:id="@+id/loginProgressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        android:layout_height="wrap_content" />
 </RelativeLayout>
