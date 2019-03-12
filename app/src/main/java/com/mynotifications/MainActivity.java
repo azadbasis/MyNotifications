@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         mMainPager = (ViewPager) findViewById(R.id.mainPager);
         mPagerViewAdapter = new PagerViewAdapter(getSupportFragmentManager());
         mMainPager.setAdapter(mPagerViewAdapter);
+        mMainPager.setOffscreenPageLimit(2);
 
 
         mProfileLabel.setOnClickListener(new View.OnClickListener() {

@@ -6,4 +6,5 @@
     
     <color name="textTabLight">#7EC6FF</color>
     <color name="textTabBright">#FFFFFF</color>
+    <color name="outline_gray">#CCCCCC</color>
 </resources>

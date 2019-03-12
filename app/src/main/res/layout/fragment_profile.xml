@@ -11,17 +11,41 @@
         android:layout_margin="15dp"
         android:background="@drawable/fragment_background">
 
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_below="@id/registerHeading"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/empty"
+            app:civ_border_color="#FFFFFFFF"
+            app:civ_border_width="2dp"
+
+            />
+
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profile_image"
+            android:fontFamily="@font/nunito_semibold"
+            android:text="Loading Name..."
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
         <Button
             android:id="@+id/logout_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_margin="15dp"
             android:background="@drawable/primary_color_btn"
             android:fontFamily="@font/nunito_semibold"
             android:text="Log out this Account"
             android:textAllCaps="false"
-            android:layout_margin="15dp"
             android:textColor="@android:color/white" />
     </RelativeLayout>
 

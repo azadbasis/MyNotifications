@@ -5,4 +5,5 @@
     <string name="user_fragment">User Fragment</string>
     <string name="notification_fragment">Notification Fragment</string>
     <string name="profile_fragment">Profile Fragment</string>
+    <string name="default_notification_channel_id">My_Notification</string>
 </resources>

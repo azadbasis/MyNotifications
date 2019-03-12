@@ -3,20 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".UsersFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_margin="15dp"
         android:background="@drawable/fragment_background">
 
         <!-- TODO: Update blank fragment layout -->
-        <TextView
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/users_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="20dp"
-            android:text="@string/user_fragment" />
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
     </RelativeLayout>
 
 </FrameLayout>

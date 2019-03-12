@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,11 +15,15 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -32,6 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private static final int PICK_IMAGE = 1;
+    private static final String TAG ="RegisterActivity" ;
     private CircleImageView mImageButton;
     private EditText mNameField;
     private EditText mEmailField;
@@ -94,14 +100,52 @@ public class RegisterActivity extends AppCompatActivity {
 
                                     final String user_id = mAuth.getUid();
                                     final StorageReference user_profile = mStorage.child(user_id + ".jpg");
-                                    user_profile.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                    user_profile.putFile(imageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                                        @Override
+                                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                                            if (!task.isSuccessful()){
+                                                throw task.getException();
+                                            }
+                                            return user_profile.getDownloadUrl();
+                                        }
+                                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Uri> task) {
+                                            if (task.isSuccessful()){
+                                                final Uri downUri = task.getResult();
+                                                Log.d(TAG, "onComplete: Url: "+ downUri.toString());
+
+                                                        String token_id= FirebaseInstanceId.getInstance().getToken();
+                                                        Map<String, Object> userMap = new HashMap<>();
+                                                        userMap.put("name", name);
+                                                        userMap.put("image", downUri.toString());
+                                                        userMap.put("token_id", token_id);
+
+                                                        mFireStore.collection("Users").document(user_id).set(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                mRegisterProgressBar.setVisibility(View.INVISIBLE);
+                                                                sendToMain();
+                                                            }
+                                                        });
+
+
+                                            }else {
+                                                Toast.makeText(RegisterActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                mRegisterProgressBar.setVisibility(View.INVISIBLE);
+                                            }
+                                        }
+                                    });
+
+                        /*            user_profile.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> uploadTask) {
 
                                             if (uploadTask.isSuccessful()) {
 
                                                 //  String download_url=uploadTask.getResult().getDownloadUrl().toString();
-                                                String download_url = user_profile.getDownloadUrl().toString();
+                                              //  String download_url = user_profile.getDownloadUrl().toString();
+                                                String download_url=uploadTask.getResult().toString();
                                                 Map<String, Object> userMap = new HashMap<>();
                                                 userMap.put("name", name);
                                                 userMap.put("image", download_url);
@@ -119,7 +163,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                 mRegisterProgressBar.setVisibility(View.INVISIBLE);
                                             }
                                         }
-                                    });
+                                    });*/
 
                                 } else {
                                     Toast.makeText(RegisterActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
